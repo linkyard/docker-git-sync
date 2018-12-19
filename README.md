@@ -33,7 +33,7 @@ docker run \
   -e REPO=git@github.com:linkyard/docker-git-sync.git \
   -e ONESHOT=true \
   -v /path/to/data:/data \
-  linkyard/docker-git-sync
+  linkyard/git-sync
 ```
 
 To check for changes every two minutes and use the `mybranch` branch:
@@ -47,5 +47,5 @@ docker run \
   -e INTERVAL=120 \
   -e BRANCH=mybranch \
   -v /path/to/data:/data \
-  linkyard/docker-git-sync
+  linkyard/git-sync
 ```
