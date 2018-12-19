@@ -13,7 +13,7 @@ if [ -n "${PKEY}" ]; then
     echo "error: ${PKEY} does not exist or can't be read"
     exit 1
   else
-    if [ "$(stat -c "%a")" != "600" ]; then
+    if [ "$(stat -c "%a" "${PKEY}")" != "600" ]; then
       echo "warning: insecure file permissions for ${PKEY}; creating a copy"
       PKEY_COPY="$(mktemp)"
       cp "${PKEY}" "${PKEY_COPY}"
