@@ -8,6 +8,21 @@ fi
 # used to ignore host key checking and using the specified ssh key for pulling
 export GIT_SSH="/opt/bin/git-ssh.sh"
 
+if [ -n "${PKEY}" ]; then
+  if [ ! -r "${PKEY}" ]; then
+    echo "error: ${PKEY} does not exist or can't be read"
+    exit 1
+  else
+    if [ "$(stat -c "%a")" != "600" ]; then
+      echo "warning: insecure file permissions for ${PKEY}; creating a copy"
+      PKEY_COPY="$(mktemp)"
+      cp "${PKEY}" "${PKEY_COPY}"
+      export PKEY="${PKEY_COPY}"
+      chmod 600 "${PKEY}"
+    fi
+  fi
+fi
+
 if [ ! -d /data ]; then
   echo "error: /data is not a directory"
   exit 1
