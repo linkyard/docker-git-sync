@@ -16,6 +16,9 @@ This docker container is configured through environment variables:
 - `PKEY` (optional): Path to an SSH private key used for authentication
 - `REPO` (required): URL of the git repository to clone
 - `ONESHOT` (optional): If this is set to `true`, clone the repository once and exit
+- `SKIP_CLONE` (optional): If this is set to `true`, `git clone` is skipped, assuming that the
+  directory `/data` already contains the cloned git repository; the directory is only checked
+  for updates with `git fetch` and `git pull`
 - `BRANCH` (optional): The branch to clone; defaults to `master`
 - `INTERVAL` (optional): Interval in second to check for changes. Defaults to `60`.
 

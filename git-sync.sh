@@ -30,21 +30,18 @@ fi
 
 cd /data || exit 1
 
-echo "$(date +"%Y-%m-%d %H:%M:%S") cloning ${REPO}"
-if ! git clone "${REPO}" .; then
-  echo "error: unable to clone ${REPO}"
-  exit 1
+if [ "${SKIP_CLONE}" = "true" ]; then
+  echo "$(date +"%Y-%m-%d %H:%M:%S") Skipping initial clone because SKIP_CLONE is set to true"
+else
+  echo "$(date +"%Y-%m-%d %H:%M:%S") cloning ${REPO}"
+  if ! git clone "${REPO}" .; then
+    echo "error: unable to clone ${REPO}"
+    exit 1
+  fi
 fi
 
 BRANCH=${BRANCH:-master}
 git checkout "${BRANCH}"
-
-if [ "${ONESHOT}" = "true" ]; then
-  exit 0
-fi
-
-BRANCH=${BRANCH:-master}
-INTERVAL=${INTERVAL:-60}
 
 onUpdate() {
   for updateHook in /update-hooks/*; do
@@ -59,8 +56,7 @@ onUpdate() {
   done
 }
 
-while (true); do
-  sleep "${INTERVAL}"
+fetchChanges() {
   git fetch origin
   # shellcheck disable=SC2181
   if [ $? -ne 0 ]; then
@@ -76,5 +72,22 @@ while (true); do
       exit 1
     fi
     onUpdate
+  fi 
+}
+
+if [ "${ONESHOT}" = "true" ]; then
+  if [ "${SKIP_CLONE}" = "true" ]; then
+    fetchChanges
+    exit 0
+  else
+    exit 0
   fi
+fi
+
+BRANCH=${BRANCH:-master}
+INTERVAL=${INTERVAL:-60}
+
+while (true); do
+  sleep "${INTERVAL}"
+  fetchChanges
 done
