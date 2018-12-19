@@ -6,7 +6,7 @@ The docker container pulls the git repository to the directory `/data`, you need
 mount this as a volume through docker or an orchestrator like kubernetes.
 
 If you want to execute arbitrary commands when changes to the git repository are
-detected, place shell-scripts into the foler `/update-hooks` by mounting a volume
+detected, place shell-scripts into the folder `/update-hooks` by mounting a volume
 with those scripts into the container.
 
 ## Configuration
