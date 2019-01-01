@@ -3,8 +3,7 @@
 onSigTerm() {
     # wake from sleep and terminate
     touch /tmp/.stop-sleeping
-    # shellcheck disable=2009
-    ps xuaf | grep sleep | grep -v grep | awk '{print $1}' | xargs -r kill
+    pgrep sleep | xargs -r kill
 }
 trap onSigTerm HUP INT QUIT TERM
 
