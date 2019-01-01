@@ -52,3 +52,20 @@ docker run \
   -v /path/to/data:/data \
   linkyard/git-sync
 ```
+
+If you just want the container to do nothing, you can start the `/opt/bin/wait.sh` script
+which sleeps forever. This may be useful if you want to execute the git synchronization with
+`docker exec` or `kubectl exec` and don't want to allocate a tty.
+
+```bash
+docker run \
+  --rm \
+  -e PKEY=/var/run/private-key/id_rsa \
+  -v /path/to/private-key/:/var/run/private-key/:ro \
+  -e REPO=git@github.com:linkyard/docker-git-sync.git \
+  -e INTERVAL=120 \
+  -e BRANCH=mybranch \
+  -v /path/to/data:/data \
+  linkyard/git-sync \
+  /opt/bin/wait.sh
+```
