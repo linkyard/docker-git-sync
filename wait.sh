@@ -3,7 +3,7 @@
 onSigTerm() {
     # wake from sleep and terminate
     touch /tmp/.stop-sleeping
-    pgrep sleep | xargs -r kill
+    pkill sleep
 }
 trap onSigTerm HUP INT QUIT TERM
 
